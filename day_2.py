@@ -2,7 +2,7 @@ from utils import read_file
 
 input_data = [x for x in read_file(2)]
 
-position  = [0, 0, 0] # position, depth for part 1, depth for part 2
+position = [0, 0, 0]  # position, depth for part 1, depth for part 2
 aim = 0
 
 for command in input_data:

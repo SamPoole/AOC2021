@@ -1,6 +1,6 @@
 from utils import read_file
 
-input_data = [x for x in read_file(4)] #, 'single', 'test')]
+input_data = [x for x in read_file(4)]
 
 
 class BingoBoard:

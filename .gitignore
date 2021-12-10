@@ -6,3 +6,6 @@ __pycache__/
 
 # vim
 *.swp
+
+# Exclude the input files
+input-files

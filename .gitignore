@@ -8,4 +8,4 @@ __pycache__/
 *.swp
 
 # Exclude the input files
-input-files
+input-files/

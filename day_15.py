@@ -1,6 +1,6 @@
 from heapq import heappush, heappop
 from time import time
-from utils import read_file
+from utils import read_file, path_find
 
 input_data = read_file(15)
 
@@ -27,44 +27,18 @@ def set_up(data, scale_up=1):
         return weight_map_2
 
 
-def manhattan(point_from, point_to):
-    return abs(point_from[0] - point_to[0]) + abs(point_from[1] - point_to[1])
-
-
-def get_neighbours(point, point_grid):
-    deltas = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    neighbours = [(point[0] + delta[0], point[1] + delta[1]) for delta in deltas]
-    return [neighbour for neighbour in neighbours if neighbour in point_grid]
-
-
-def path_find(data, scale_up=1):
-    weights = set_up(data, scale_up)
+def find_paths(data, scale_up=1):
+    origin = (0, 0)
     destination = (scale_up * len(data) - 1, scale_up * len(data[0]) - 1)
-    # return destination
-    came_from = {(0, 0): None}
-    cost_so_far = {(0, 0): 0, destination: False}
-    frontier = []
-    heappush(frontier, (0, (0, 0)))
+    weights = set_up(data, scale_up)
 
-    while not cost_so_far[destination]:
-        current = heappop(frontier)[1]
-
-        for next_point in get_neighbours(current, weights):
-            if next_point not in came_from or cost_so_far[current] + weights[next_point] < cost_so_far[next_point]:
-                came_from[next_point] = current
-                cost_so_far[next_point] = cost_so_far[current] + weights[next_point]
-                neighbour_priority = manhattan(next_point, destination)
-                frontier.append((neighbour_priority, next_point))
-
-    return cost_so_far[destination]
+    return path_find(origin, destination, weights, True, False)
 
 
 start_time_1 = time()
-result_1 = path_find(input_data, 1)
-end_time_1 = time() - start_time_1
-print(f'Part 1: {result_1} in {end_time_1:0.5f} seconds')
+result_1 = find_paths(input_data, 1)
+print(f'Part 1: {result_1} in {time() - start_time_1:0.5f} seconds')
 start_time_2 = time()
-result_2 = path_find(input_data, 5)
-end_time_2 = time() - start_time_2
-print(f'Part 2: {result_2} in {end_time_2:0.5f} seconds')
-
+result_2 = find_paths(input_data, 5)
+print(f'Part 2: {result_2} in {time() - start_time_2:0.5f} seconds')
+print(f'Total duration: {time() - start_time_1:0.5f} seconds')

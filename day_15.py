@@ -1,4 +1,4 @@
-from collections import deque
+from heapq import heappush, heappop
 from time import time
 from utils import read_file
 
@@ -37,28 +37,24 @@ def get_neighbours(point, point_grid):
     return [neighbour for neighbour in neighbours if neighbour in point_grid]
 
 
-def manhattan(point_from, point_to):
-    return abs(point_from[0] - point_to[0]) + abs(point_from[1] - point_to[1])
-
-
 def path_find(data, scale_up=1):
-    weights = set_up(input_data, scale_up)
-    destination = (scale_up * len(input_data) - 1, scale_up * len(input_data[0]) - 1)
+    weights = set_up(data, scale_up)
+    destination = (scale_up * len(data) - 1, scale_up * len(data[0]) - 1)
     # return destination
     came_from = {(0, 0): None}
-    cost_so_far = {(0, 0): 0}
-    frontier = deque([(0, 0)])
+    cost_so_far = {(0, 0): 0, destination: False}
+    frontier = []
+    heappush(frontier, (0, (0, 0)))
 
-    while frontier:
-        current = frontier[0]
+    while not cost_so_far[destination]:
+        current = heappop(frontier)[1]
 
         for next_point in get_neighbours(current, weights):
             if next_point not in came_from or cost_so_far[current] + weights[next_point] < cost_so_far[next_point]:
                 came_from[next_point] = current
                 cost_so_far[next_point] = cost_so_far[current] + weights[next_point]
-                frontier.append(next_point)
-
-        frontier.popleft()
+                neighbour_priority = manhattan(next_point, destination)
+                frontier.append((neighbour_priority, next_point))
 
     return cost_so_far[destination]
 
@@ -71,3 +67,4 @@ start_time_2 = time()
 result_2 = path_find(input_data, 5)
 end_time_2 = time() - start_time_2
 print(f'Part 2: {result_2} in {end_time_2:0.5f} seconds')
+

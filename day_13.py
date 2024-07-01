@@ -50,8 +50,11 @@ def origami(data, print_after_each_fold=False):
         if iteration == 0:
             print(f'Part 1: {len(dots)}')
 
+        print(f'Iteration {iteration}: {len(dots)}')
+
     print('Part 2:')
     print_dots()
+    print(set(dots.keys()))
 
 
 origami(input_data)
